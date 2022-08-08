@@ -1,0 +1,11 @@
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/kotlin/jvm/main/
+/build/classes/kotlin/jvm/test/
+/build/classes/kotlin/linuxX64/main/klib/
+/build/classes/kotlin/linuxX64/test/klib/
+/build/classes/kotlin/mingwX64/main/klib/
+/build/classes/kotlin/mingwX64/test/klib/
+/build/js/packages/command-bus/kotlin/
+/build/js/packages/command-bus-test/kotlin/
