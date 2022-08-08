@@ -13,14 +13,13 @@ class CommandHandlerTest {
 
         class TestCommand : Command
 
-        val testHandlerFunction = { _: TestCommand -> Success }
+        val testHandlerFunction: suspend (TestCommand) -> CommandResult = { _: TestCommand -> Success }
 
         commandHandler.on(TestCommand::class, testHandlerFunction)
 
         val actual = commandHandler.registeredCommands[TestCommand::class]
         assertNotNull(actual)
-        assertIs<(TestCommand) -> CommandResult>(actual)
-        assertSame(testHandlerFunction, actual as (TestCommand) -> CommandResult)
+        assertSame(testHandlerFunction, actual as suspend (TestCommand) -> CommandResult)
     }
 
     @Test
@@ -30,21 +29,19 @@ class CommandHandlerTest {
         class TestCommand : Command
         class TestCommandSecond : Command
 
-        val testHandlerFunction = { _: TestCommand -> Success }
-        val testHandlerFunctionSecond = { _: TestCommandSecond -> Success }
+        val testHandlerFunction: suspend (TestCommand) -> CommandResult = { _: TestCommand -> Success }
+        val testHandlerFunctionSecond: suspend (TestCommandSecond) -> CommandResult = { _: TestCommandSecond -> Success }
 
         commandHandler.on(TestCommand::class, testHandlerFunction)
         commandHandler.on(TestCommandSecond::class, testHandlerFunctionSecond)
 
         val actual = commandHandler.registeredCommands[TestCommand::class]
         assertNotNull(actual)
-        assertIs<(TestCommand) -> CommandResult>(actual)
-        assertSame(testHandlerFunction, actual as (TestCommand) -> CommandResult)
+        assertSame(testHandlerFunction, actual as suspend (TestCommand) -> CommandResult)
 
         val actualSecond = commandHandler.registeredCommands[TestCommandSecond::class]
         assertNotNull(actualSecond)
-        assertIs<(TestCommandSecond) -> CommandResult>(actualSecond)
-        assertSame(testHandlerFunctionSecond, actualSecond as (TestCommandSecond) -> CommandResult)
+        assertSame(testHandlerFunctionSecond, actualSecond as suspend (TestCommandSecond) -> CommandResult)
     }
 
     @Test

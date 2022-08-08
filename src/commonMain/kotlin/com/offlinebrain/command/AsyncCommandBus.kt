@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.reduce
 
-class SuspendCommandBus(private val coroutineScope: CoroutineScope) : CommandBus() {
+class AsyncCommandBus(private val coroutineScope: CoroutineScope) : CommandBus() {
 
     fun sendAsync(command: Command): Deferred<CommandResult> {
         return coroutineScope.async { send(command) }

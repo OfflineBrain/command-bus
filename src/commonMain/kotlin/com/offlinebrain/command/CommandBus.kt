@@ -3,7 +3,7 @@ package com.offlinebrain.command
 import kotlin.reflect.KClass
 
 open class CommandBus {
-    private val handlers = mutableMapOf<KClass<out Command>, (Command) -> CommandResult>()
+    private val handlers = mutableMapOf<KClass<out Command>, suspend (Command) -> CommandResult>()
 
     fun register(commandHandler: CommandHandler) {
         commandHandler
@@ -17,11 +17,11 @@ open class CommandBus {
             }
     }
 
-    fun send(command: Command): CommandResult {
+    suspend fun send(command: Command): CommandResult {
         return handlers[command::class]?.invoke(command) ?: Failure("No handler for command ${command::class}")
     }
 
-    fun sendMany(commands: Iterable<Command>): CommandResult {
+    suspend fun sendMany(commands: Iterable<Command>): CommandResult {
         return commands.map { send(it) }.reduce { acc, result -> acc + result }
     }
 }

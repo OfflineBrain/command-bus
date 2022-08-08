@@ -13,7 +13,7 @@ class SuspendCommandBusTest {
     @Test
     fun shouldHandleCommand(): TestResult {
         return runTest {
-            val commandBus = SuspendCommandBus(GlobalScope)
+            val commandBus = AsyncCommandBus(GlobalScope)
             commandBus.register(TestHandler())
             val result = commandBus.sendAsync(TestCommand()).await()
 
@@ -25,7 +25,7 @@ class SuspendCommandBusTest {
     @Test
     fun shouldHandleManyCommands(): TestResult {
         return runTest {
-            val commandBus = SuspendCommandBus(GlobalScope)
+            val commandBus = AsyncCommandBus(GlobalScope)
             commandBus.register(TestHandler())
             val result = commandBus.sendManyAsync(listOf(TestCommand(), TestCommand())).await()
 
@@ -37,7 +37,7 @@ class SuspendCommandBusTest {
     @Test
     fun shouldHandleManyCommandsWithReduce(): TestResult {
         return runTest {
-            val commandBus = SuspendCommandBus(GlobalScope)
+            val commandBus = AsyncCommandBus(GlobalScope)
             commandBus.register(TestHandler())
             commandBus.register(TestFailHandler())
             val result = commandBus.sendManyAsync(listOf(TestCommand(), TestFailCommand())).await()

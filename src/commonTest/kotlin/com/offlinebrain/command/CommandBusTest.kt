@@ -1,5 +1,7 @@
 package com.offlinebrain.command
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
@@ -12,8 +14,9 @@ class CommandBusTest {
         assertFailsWith<IllegalStateException> { commandBus.register(TestHandlerWithDuplicate()) }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun shouldHandleCommand() {
+    fun shouldHandleCommand() = runTest {
         val commandBus = CommandBus()
         commandBus.register(TestHandler())
         val result = commandBus.send(TestCommand())
@@ -21,8 +24,9 @@ class CommandBusTest {
         assertIs<Success>(result)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun shouldHandleManyCommands() {
+    fun shouldHandleManyCommands() = runTest {
         val commandBus = CommandBus()
         commandBus.register(TestHandler())
         val result = commandBus.sendMany(listOf(TestCommand(), TestCommand()))
@@ -30,8 +34,9 @@ class CommandBusTest {
         assertIs<Success>(result)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun shouldHandleManyCommandsWithReduce() {
+    fun shouldHandleManyCommandsWithReduce() = runTest {
         val commandBus = CommandBus()
         commandBus.register(TestHandler())
         commandBus.register(TestFailHandler())
